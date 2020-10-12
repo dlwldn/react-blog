@@ -4,6 +4,8 @@ const PORT = process.env.PORT || 5000;
 const bodyParser = require('body-parser');
 
 const router = require('./route');
+const sequelize = require('./models').sequelize;
+sequelize.sync();
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}))
