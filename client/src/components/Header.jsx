@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Link } from 'react-router-dom';
 import Modal from 'react-awesome-modal';
 import axios from 'axios';
@@ -8,6 +8,14 @@ const Header = () => {
     const [visible, setVisible] = useState(false);
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const [login, setLogin] = useState(false);
+
+    useEffect(() => {
+        if (sessionStorage.login) {
+            setLogin(true);
+        }
+    }, [login])
+
 
     const openModal = () => {
         setVisible(true);
@@ -15,6 +23,8 @@ const Header = () => {
 
     const closeModal = () => {
         setVisible(false);
+        setId('');
+        setPassword('');
     }
 
     const onChangeIdHandler = () => {
@@ -30,27 +40,54 @@ const Header = () => {
     }
 
     const selectUserData = async (e) => {
+        const _id = id.trim();
+        const _password = password.trim();
+
+        if (_id === "") {
+            return alert('아이디를 입력해주세요.');
+        } else if (_password === "") {
+            return alert('비밀번호를 입력해주세요.');
+        }
+        const obj = { id: _id, password: _password };
         const res = await axios('http://localhost:5000/api/send/pw', {
             method: 'POST',
-            data: { id, password },
+            data: obj,
             headers: new Headers()
         })
 
         if (res.data) {
-            console.log(res.data)
+            console.log(res.data.msg);
+
+            if (res.data.suc) {
+                sessionStorage.setItem('login', true)
+                setLogin(true);
+                closeModal();
+
+                return alert('로그인 되었습니다.');
+            } else {
+                return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+            }
+        }
+    }
+
+    const logout = () => {
+        if (window.confirm('로그아웃 하시겠습니까?')) {
+            sessionStorage.removeItem('login');
+            setLogin(false);
         }
     }
 
     return (
         <div className='header_grid'>
-            <div> </div>
+            <div></div>
             <div className='acenter'>
-                <Route path='/' />
-                <Link className='link_tit' to='/'> <h3>지우's Blog</h3> </Link>
+                <h3>지우 blog</h3>
+                {login ? <h5><Link to="/write">포스트 작성</Link></h5> : null}
             </div>
 
             <div className='acenter'>
-                <h5 onClick={openModal}> 관리자 로그인 </h5>
+                {login ? <h5 className='btn_cursor' onClick={logout}> 관리자 로그아웃 </h5>
+                    : <h5 className='btn_cursor' onClick={openModal}> 관리자 로그인 </h5>}
 
                 <Modal visible={visible}
                     width="400" height="360"
@@ -63,12 +100,12 @@ const Header = () => {
                             <div className='login_div'>
                                 <div className='login_input_div'>
                                     <p> 관리자 ID </p>
-                                    <input type='text' name='id' onChange={onChangeIdHandler} />
+                                    <input type='text' name='id' value={id} onChange={onChangeIdHandler} />
                                 </div>
 
                                 <div className='login_input_div' style={{ 'marginTop': '40px' }}>
                                     <p> 관리자 Password </p>
-                                    <input type='text' name='password' onChange={onChangePasswordHandler} />
+                                    <input type='password' name='password' value={password} onChange={onChangePasswordHandler} />
                                 </div>
 
                                 <div className='submit_div'>
