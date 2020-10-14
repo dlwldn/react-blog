@@ -59,3 +59,55 @@
     cursor: pointer;
     background-color: white;
 }
+
+
+
+
+
+.List {
+    padding: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+    min-height: 500px;
+}
+
+.list_tit {
+    border-bottom: solid 1px #ababab;
+    color: #ababab;
+}
+
+.list_grid {
+    display: grid;
+    grid-template-columns: 70% 15% 15%;
+}
+
+.list_data {
+    line-height: 40px;
+}
+
+.acenter {
+    text-align: center;
+}
+
+
+
+
+.paging_div {
+    margin-top: 10px;
+    border-top: solid 1px #ababab;
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+    text-align: center;
+}
+
+.paging_div div {
+    padding: 15px;
+    text-align: center;
+}
+
+.page_num {
+    margin-right: 20px;
+    list-style: none;
+    display: inline-block;
+    cursor: pointer;
+}

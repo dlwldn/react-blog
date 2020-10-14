@@ -43,6 +43,22 @@ AWS.config.loadFromPath(
               }
             })
           }
+        },
+        get : {
+          board : (req, res) => {
+            const body = req.body;
+            model.get.board(body, result => {
+              if(result) {
+                res.send(result);
+              }
+            })
+          },
+          board_cnt : (req, res) => {
+            model.get.board_cnt(cnt => {
+              const result = { cnt : cnt }
+              res.send(result)
+            })
+          }
         }
     }
 
