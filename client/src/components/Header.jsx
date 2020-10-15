@@ -77,11 +77,12 @@ const Header = () => {
         }
     }
 
+
     return (
         <div className='header_grid'>
             <div></div>
             <div className='acenter'>
-                <h3>지우 blog</h3>
+                <h3>지우 Blog</h3>
                 {login ? <h5><Link to="/write">포스트 작성</Link></h5> : null}
             </div>
 

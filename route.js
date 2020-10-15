@@ -5,7 +5,7 @@ const controller = require('./controller');
 router.post('/api/send/pw', controller.api.sendPw);
 router.post('/api/add/board', controller.add.board);
 router.post('/api/get/board', controller.get.board);
-router.get('/api/get/board_cnt', controller.get.board_cnt);
+router.post('/api/get/board_cnt', controller.get.board_cnt);
 
 
 

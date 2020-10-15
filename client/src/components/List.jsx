@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import axios from 'axios';
 import '../main.css';
+import Search from './Search';
+import queryString from 'query-string';
 
-const List = memo(() => {
+const List = memo((props) => {
     const [data, setData] = useState([]);
     const [pageAll, setPageAll] = useState([]);
     const [sessionPage, setSessionPage] = useState('');
     const [limit, setLimit] = useState(10);
+    const [searchResult, setSearchResult] = useState('');
 
     useEffect(() => {
         getListData();
@@ -15,8 +18,18 @@ const List = memo(() => {
 
     const getListData = useCallback(async () => {
         const postPage = setPage();
+        let search = queryString.parse(props.location.search);
+        if (search) {
+            search = search.search;
+        }
+        console.log(search)
 
-        const totalCnt = await axios('http://localhost:5000/api/get/board_cnt');
+        const totalCnt = await axios('http://localhost:5000/api/get/board_cnt', {
+            method: 'POST',
+            headers: new Headers(),
+            data: { search: search }
+        });
+
         // const dataList = await axios('http://localhost:5000/api/get/board', {
         //     method: 'GET',
         //     headers: new Headers(),
@@ -25,15 +38,18 @@ const List = memo(() => {
         const totalList = await axios('http://localhost:5000/api/get/board', {
             method: 'POST',
             headers: new Headers(),
-            data: { limit: limit, page: postPage }
+            data: { limit: limit, page: postPage, search: search }
         })
 
         let pageArr = [];
         for (let i = 1; i <= Math.ceil(totalCnt.data.cnt / limit); i++) {
             pageArr.push(i);
         }
+
+        console.log(pageArr);
         setPageAll(pageArr);
         setData(totalList);
+        setSearchResult(search);
     }, [])
 
     const changePage = useCallback((el) => {
@@ -62,7 +78,7 @@ const List = memo(() => {
                 <div className='acenter'> 날짜 </div>
             </div>
 
-            {data.data ? data.data.map((el, key) => {
+            {data.data && data.data.length > 0 ? data.data.map((el, key) => {
                 return (
                     <div className='list_grid list_data' key={key}>
                         <div> {el.title} </div>
@@ -71,7 +87,12 @@ const List = memo(() => {
                     </div>
                 )
             })
-                : null}
+                : <div className='not_data acenter'>
+                    {searchResult !== "" ? <div> 검색된 결과가 없습니다. </div> // 검색 사용
+                        : <div> 데이터가 없습니다. </div> // 검색 사용 X
+                    }
+                </div>
+            }
 
 
             <div className='paging_div'>
@@ -86,8 +107,12 @@ const List = memo(() => {
                         })
                             : null}
                     </ul>
+
+                    <Search searchResult={searchResult} />
                 </div>
-                <div> </div>
+                <div>
+
+                </div>
             </div>
         </div>
     )
