@@ -3,6 +3,9 @@ import axios from 'axios';
 import '../main.css';
 import Search from './Search';
 import queryString from 'query-string';
+import { Link } from 'react-router-dom';
+
+
 
 const List = memo((props) => {
     const [data, setData] = useState([]);
@@ -79,9 +82,10 @@ const List = memo((props) => {
             </div>
 
             {data.data && data.data.length > 0 ? data.data.map((el, key) => {
+                const view_url = '/view/' + el.board_id;
                 return (
                     <div className='list_grid list_data' key={key}>
-                        <div> {el.title} </div>
+                        <div> <Link to={view_url}> {el.title} </Link> </div>
                         <div> </div>
                         <div className='acenter'> {el.date.slice(0, 10)} </div>
                     </div>
