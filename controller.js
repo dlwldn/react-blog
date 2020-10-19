@@ -68,6 +68,33 @@ AWS.config.loadFromPath(
               res.send(result)
             })
           }  
+        },
+
+        update : {
+          view_cnt : (req, res) => {
+            const body = req.body;
+        
+            const expires = new Date();
+            expires.setDate(expires.getDate() + 1);
+            
+            const cookie_name = 'board_' + body.id;
+            console.log(req.cookies[cookie_name]);
+
+            const exist_cookie = req.cookies[cookie_name]
+
+          if(!exist_cookie) {
+            res.cookie(cookie_name, true, {
+              expires: expires
+            });
+          
+            model.update.view_cnt(body, result => {
+            if(result) {
+              res.send(true);
+            }
+          })
+        }
+
+         }
         }
     }
 

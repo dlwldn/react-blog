@@ -28,7 +28,8 @@ module.exports = {
             Board.create({
                 title : body.title,
                 contents : body.contents,
-                date : new Date()
+                date : new Date(),
+                view_cnt: 0,
             })
             .then(data => {
                 callback(true)
@@ -103,5 +104,19 @@ module.exports = {
                 throw err;
             })
         }
-    }
+    },
+
+    update : {
+        view_cnt : (body, callback) => {
+            Board.update({ view_cnt : sequelize.literal('view_cnt + 1')}, {
+                where : { board_id : body.id }
+            })
+            .then(data => {
+                callback(true)
+            })
+            .catch(err => {
+                throw err;
+            })
+        }
+    },
 }

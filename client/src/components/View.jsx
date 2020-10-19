@@ -8,25 +8,30 @@ const View = (props) => {
     const [date, setDate] = useState('');
 
     useEffect(() => {
-        getData();
+        const board_id = props.match.params.data;
+        getData(board_id);
+        addViewCnt(board_id);
     }, [])
 
-    const getData = async () => {
-        const board_id = props.match.params.data;
-        // console.log(board_id);
+    const getData = async (board_id) => {
         const getBoardData = await axios('http://localhost:5000/api/get/board_data', {
             method: 'POST',
             headers: new Headers(),
             data: { id: board_id }
         });
-
-        console.log(getBoardData.data.data[0]);
         const date = getBoardData.data.data[0].date.slice(0, 10) + ' ' + getBoardData.data.data[0].date.slice(11, 16);
         setData(() => getBoardData);
         setDate(date)
-
-
     }
+
+    const addViewCnt = async function (board_id) {
+        const addView = await axios('http://localhost:5000/api/update/view_cnt', {
+            method: 'POST',
+            headers: new Headers(),
+            data: { id: board_id }
+        })
+    }
+
 
     return (
         <div className='Write'>
