@@ -161,3 +161,36 @@ a {
 .top_title {
     border-bottom: solid 1px #ababab;
 }
+
+
+
+.write_option_div {
+    margin-left: 87%;
+}
+
+.write_option_div input {
+    margin-right: 10px;
+    padding: 3px 7px 3px 7px;
+    border-radius: 2px;
+    border: solid 1px #ababab;
+    cursor: pointer;
+    background-color: white;
+}
+
+
+.write_option_div input,
+#view_list_button {
+    margin-right: 10px;
+    padding: 3px 7px 3px 7px;
+    border-radius: 2px;
+    border: solid 1px #ababab;
+    cursor: pointer;
+    background-color: white;
+}
+
+#view_list_button {
+    position: absolute;
+    margin-left: 50.5%;
+    margin-top: -40px;
+    margin-right: 10px;
+}

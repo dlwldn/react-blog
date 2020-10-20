@@ -86,7 +86,7 @@ const List = memo((props) => {
                 return (
                     <div className='list_grid list_data' key={key}>
                         <div> <Link to={view_url}> {el.title} </Link> </div>
-                        <div> </div>
+                        <div> {el.view_cnt}</div>
                         <div className='acenter'> {el.date.slice(0, 10)} </div>
                     </div>
                 )

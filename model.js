@@ -119,4 +119,14 @@ module.exports = {
             })
         }
     },
+    delete: {
+        board : (body, callback) => {
+            Board.destroy({
+                where : { board_id : body.board_id }
+            })
+            .then( () => { callback(true) })
+            .catch(err => { throw err; })
+        }
+    }
+    
 }
